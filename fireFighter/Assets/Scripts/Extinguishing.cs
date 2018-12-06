@@ -44,8 +44,9 @@ public class Extinguishing : MonoBehaviour {
             //mainModule.startLifetimeMultiplier *= Mathf.Lerp(multiplier, 1, 0.5f);
             //system.Clear();
             system.Play();
-            Invoke("ResetFire", 10);
         }
+        CancelInvoke("ResetFire");
+        Invoke("ResetFire", 10);
         if (multiplier <= 0&&!isExtinguished)
         {
             isExtinguished = true;
@@ -68,8 +69,8 @@ public class Extinguishing : MonoBehaviour {
     private void ResetFire()
     {
         GameObject f = Instantiate(firePrefab,fire.transform);
-        f.transform.parent = fire.transform.parent;
-        //Destroy(fire);
+        //f.transform.parent = fire.transform.parent;
+        Destroy(fire);
         fire = f;
         
     }
