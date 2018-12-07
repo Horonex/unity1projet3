@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class FireLevel : MonoBehaviour {
 
-    [SerializeField] GameObject[] fires;
-
-    int FireForLevel;
+    [SerializeField] public GameObject[] fires;
+    [SerializeField] HUDUpdater canvas;
+    [SerializeField] WaterHose hose;
+    public int FireForLevel;
     int activatedFire;
     public int Level=6;
     int nbOfLevel=6;
     int StartingFire;
-    int extinguishedFire=0;
+    public int extinguishedFire=0;
 
     public float damage=100f;
 
@@ -28,13 +30,14 @@ public class FireLevel : MonoBehaviour {
         {
             ActivateFire();
         }
+        hose.water = 200 * FireForLevel + 400;
+
         FireGameplay();
 
     }
 	
     void FireGameplay()
     {
-        Debug.Log("fgp");
         if (activatedFire<FireForLevel)
         {
             float a = nbOfLevel + 1f - Level;
@@ -64,6 +67,7 @@ public class FireLevel : MonoBehaviour {
             //Win
             Debug.Log("win");
         }
+        canvas.UpdateFire();
     }
 
 	// Update is called once per frame

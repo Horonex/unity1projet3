@@ -6,8 +6,8 @@ using UnityStandardAssets.Effects;
 using UnityStandardAssets.Utility;
 
 public class Extinguishing : MonoBehaviour {
-	public float multiplier = 1f;
-	[SerializeField] private float reduceFactor = 0.8f;
+	public float multiplier = 2f;
+	[SerializeField] private float reduceFactor = 0.05f;
 	[SerializeField] private GameObject checkbox;
 	private AudioSource audioS;
     bool isExtinguished=false;
@@ -46,14 +46,16 @@ public class Extinguishing : MonoBehaviour {
             system.Play();
         }
         CancelInvoke("ResetFire");
-        Invoke("ResetFire", 10);
+        Invoke("ResetFire", 2);
         if (multiplier <= 0&&!isExtinguished)
         {
             isExtinguished = true;
             GetComponent<ParticleSystemDestroyer>().Stop();
             checkbox.SetActive(true);
             checkbox.transform.parent = null;
+            CancelInvoke("ResetFire");
             extinguished();
+
         }
     }
 
@@ -69,10 +71,22 @@ public class Extinguishing : MonoBehaviour {
     private void ResetFire()
     {
         GameObject f = Instantiate(firePrefab,fire.transform);
-        //f.transform.parent = fire.transform.parent;
+        f.transform.parent = fire.transform.parent;
         Destroy(fire);
         fire = f;
-        
+        multiplier = 2f;
+        Debug.Log(multiplier);
+        var systems = GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem system in systems)
+        {
+            ParticleSystem.MainModule mainModule = system.main;
+            mainModule.startSizeMultiplier *= multiplier;
+            mainModule.startSpeedMultiplier *= multiplier;
+            mainModule.startLifetimeMultiplier *= multiplier;
+            //system.Clear();
+            system.Play();
+        }
+
     }
 
 }

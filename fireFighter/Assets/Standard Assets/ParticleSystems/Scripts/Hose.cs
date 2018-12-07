@@ -11,7 +11,6 @@ namespace UnityStandardAssets.Effects
         public float changeSpeed = 5;
         public ParticleSystem[] hoseWaterSystems;
         public Renderer systemRenderer;
-
         private float m_Power;
 
 
@@ -24,6 +23,7 @@ namespace UnityStandardAssets.Effects
             {
                 systemRenderer.enabled = !systemRenderer.enabled;
             }
+
 
             foreach (var system in hoseWaterSystems)
             {
