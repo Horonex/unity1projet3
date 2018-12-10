@@ -10,6 +10,7 @@ public class WaterHose : MonoBehaviour {
 	private Hose hoseScript ;
     public Action watering;
     public int water;
+    [SerializeField] GameObject hose;
 
     void Start () {
 		audioS = GetComponent<AudioSource>();
@@ -17,7 +18,7 @@ public class WaterHose : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetButton("Fire1"))
+		if (Input.GetButton("Fire1")&&water>0)
         {
 			audioS.volume =  Mathf.Lerp(audioS.volume,1,Time.deltaTime*5);
             watering();
@@ -26,6 +27,10 @@ public class WaterHose : MonoBehaviour {
         {
 			audioS.volume =  Mathf.Lerp(audioS.volume,0,Time.deltaTime*5);
 		}
+        if(water<=0)
+        {
+            hose.SetActive(false);
+        }
 	}
 
 }

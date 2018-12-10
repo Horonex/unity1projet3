@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,15 +11,22 @@ public class FireLevel : MonoBehaviour {
     [SerializeField] WaterHose hose;
     public int FireForLevel;
     int activatedFire;
-    public int Level=6;
-    int nbOfLevel=6;
+    public int Level=-1;
+    public int nbOfLevel=6;
     int StartingFire;
     public int extinguishedFire=0;
 
     public float damage=100f;
 
+    public Action win;
+
     // Use this for initialization
     void Start () {
+        Level = PlayerPrefs.GetInt("Level");
+        if(Level==-1 ||Level==0)
+        {
+            Level = 1;
+        }
         FireForLevel = Level + 3;
         StartingFire = FireForLevel / 2;
 		foreach(var f in fires)
@@ -42,7 +50,7 @@ public class FireLevel : MonoBehaviour {
         {
             float a = nbOfLevel + 1f - Level;
             float b = 2f * (nbOfLevel + 1 - Level) + 1;
-            float rTime = Random.Range(a, b);
+            float rTime = UnityEngine.Random.Range(a, b);
             ActivateFire();
             Invoke("FireGameplay", rTime);
         }
@@ -51,7 +59,7 @@ public class FireLevel : MonoBehaviour {
 
     void ActivateFire()
     {
-        int rIndex = Random.Range(0, fires.Length);
+        int rIndex = UnityEngine.Random.Range(0, fires.Length);
         if(!fires[rIndex].active)
         {
             fires[rIndex].SetActive(true);
@@ -64,8 +72,7 @@ public class FireLevel : MonoBehaviour {
         extinguishedFire++;
         if(extinguishedFire>=FireForLevel)
         {
-            //Win
-            Debug.Log("win");
+            win();
         }
         canvas.UpdateFire();
     }

@@ -55,6 +55,7 @@ public class Extinguishing : MonoBehaviour {
             checkbox.transform.parent = null;
             CancelInvoke("ResetFire");
             extinguished();
+            Destroy(fire);
 
         }
     }
@@ -70,12 +71,14 @@ public class Extinguishing : MonoBehaviour {
 
     private void ResetFire()
     {
-        GameObject f = Instantiate(firePrefab,fire.transform);
-        f.transform.parent = fire.transform.parent;
-        Destroy(fire);
-        fire = f;
+        if(fire!=null)
+        {
+            GameObject f = Instantiate(firePrefab,fire.transform);
+            f.transform.parent = fire.transform.parent;
+            Destroy(fire);
+            fire = f;
+        }
         multiplier = 2f;
-        Debug.Log(multiplier);
         var systems = GetComponentsInChildren<ParticleSystem>();
         foreach (ParticleSystem system in systems)
         {
